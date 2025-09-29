@@ -23,6 +23,13 @@ class Book:
                 amount += (days_rented - 3) * 1.5
         return amount
 
+    def get_frequent_renter_points(self, days_rented: int) -> int:
+        """Calcula os pontos de fidelidade de um aluguel para este livro"""
+        points = 1
+        if self.price_code == Book.NEW_RELEASE and days_rented > 1:
+            points += 1
+        return points
+
 
 class Rental:
     def __init__(self, book: Book, days_rented: int):
@@ -34,11 +41,8 @@ class Rental:
         return self.book.get_charge(self.days_rented)
 
     def get_frequent_renter_points(self) -> int:
-        """Calcula os pontos de fidelidade de um aluguel específico"""
-        points = 1
-        if self.book.price_code == Book.NEW_RELEASE and self.days_rented > 1:
-            points += 1
-        return points
+        """Delegação para Book"""
+        return self.book.get_frequent_renter_points(self.days_rented)
 
 
 class Client:
@@ -55,9 +59,7 @@ class Client:
         result = f"Rental summary for {self.name}\n"
         
         for rental in self.rentals:
-            # agora rental delega para Book
             amount = rental.get_charge()
-
             frequent_renter_points += rental.get_frequent_renter_points()
 
             result += f"- {rental.book.title}: {amount}\n"
