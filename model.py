@@ -1,3 +1,23 @@
+class Price:
+    def get_charge(self, days_rented: int) -> float:
+        pass
+
+    def get_frequent_renter_points(self, days_rented: int) -> int:
+        pass
+
+
+class RegularPrice(Price):
+    pass
+
+
+class NewReleasePrice(Price):
+    pass
+
+
+class ChildrenPrice(Price):
+    pass
+
+
 class Book:
 
     REGULAR: int = 0
@@ -9,7 +29,6 @@ class Book:
         self.price_code = price_code
 
     def get_charge(self, days_rented: int) -> float:
-        """Calcula o valor de um aluguel para este livro"""
         amount = 0
         if self.price_code == Book.REGULAR:
             amount += 2
@@ -24,7 +43,6 @@ class Book:
         return amount
 
     def get_frequent_renter_points(self, days_rented: int) -> int:
-        """Calcula os pontos de fidelidade de um aluguel para este livro"""
         points = 1
         if self.price_code == Book.NEW_RELEASE and days_rented > 1:
             points += 1
@@ -37,11 +55,9 @@ class Rental:
         self.days_rented = days_rented
 
     def get_charge(self) -> float:
-        """Delegação para Book"""
         return self.book.get_charge(self.days_rented)
 
     def get_frequent_renter_points(self) -> int:
-        """Delegação para Book"""
         return self.book.get_frequent_renter_points(self.days_rented)
 
 
